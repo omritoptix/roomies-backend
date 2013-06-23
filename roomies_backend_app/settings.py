@@ -1,5 +1,6 @@
 # Django settings for roomies_backend_app project.
 
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -63,7 +64,7 @@ MEDIA_URL = ''
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = ''
 
-# URL prefix for static files.
+# URL prefix for static files.$DATABASE_URL
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
@@ -121,7 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
