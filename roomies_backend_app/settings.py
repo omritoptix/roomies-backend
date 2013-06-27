@@ -1,4 +1,5 @@
 # Django settings for roomies_backend_app project.
+import os
 
 
 DEBUG = True
@@ -57,6 +58,16 @@ MEDIA_ROOT = ''
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
+
+
+#configure site root to be relative to this file (__file__)
+SITE_ROOT = SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+# indicate the admin media root
+ADMIN_MEDIA_ROOT = os.path.join(SITE_ROOT,'admin-media/')
+
+
+ADMIN_MEDIA_PREFIX = 'http:/localhost:8000/admin-media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
