@@ -64,10 +64,10 @@ MEDIA_URL = ''
 SITE_ROOT = SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # indicate the admin media root
-ADMIN_MEDIA_ROOT = os.path.join(SITE_ROOT,'admin-media/')
+# ADMIN_MEDIA_ROOT = os.path.join(SITE_ROOT,'admin-media/')
 
 
-ADMIN_MEDIA_PREFIX = 'http:/localhost:8000/admin-media/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
