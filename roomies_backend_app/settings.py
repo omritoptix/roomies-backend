@@ -67,7 +67,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 # ADMIN_MEDIA_ROOT = os.path.join(SITE_ROOT,'admin-media/')
 
 
-# ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -179,3 +179,6 @@ INSTALLED_APPS = INSTALLED_APPS + ('roomies_backend_app',)
 INSTALLED_APPS = INSTALLED_APPS + ('south',)
 INSTALLED_APPS = INSTALLED_APPS + ('tastypie',)
 INSTALLED_APPS = INSTALLED_APPS + ('gunicorn',)
+
+#determine tastypie default format
+# TASTYPIE_DEFAULT_FORMATS = ['json']

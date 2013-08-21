@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <title>Roomies showcase</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+{% verbatim %}
+    <script type="text/x-handlebars"  data-template-name="roomies">
+        <h1>Roomies App</h1>
+        {{outlet}}
+    </script>
+    <script type="text/x-handlebars" data-template-name="roomies/index">
+        {{#each controller}}
+            <article>
+                {{title}}
+                <p>isAvailable : {{isAvailable}}</p>
+            </article>
+        {{/each}}
+    </script>
+{% endverbatim %}
+</body>
+  	<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+  	<script src="http://emberjs.com.s3.amazonaws.com/getting-started/handlebars.js"></script>	
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/vendor/ember.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/vendor/ember-data.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/vendor/tastypie_serializer.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/vendor/tastypie_adapter.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/roomiesMain.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/router.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/store.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}roomies_backend_app/js/apartment.js" type="text/javascript"></script>
+</html>

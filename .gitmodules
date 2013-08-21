@@ -1,0 +1,3 @@
+[submodule "roomies_backend_app/templates/nerdeez-ember"]
+	path = roomies_backend_app/templates/nerdeez-ember
+	url = git@github.com:ywarezk/nerdeez-ember.git
