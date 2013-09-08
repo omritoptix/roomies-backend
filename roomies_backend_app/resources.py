@@ -3,7 +3,7 @@ from tastypie.resources import fields
 from tastypie.resources import ModelResource
 
 from roomies_backend_app.models import *
-from tastypie.constants import ALL
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization
 
 
@@ -28,6 +28,7 @@ class ApartmentResource(ModelResource):
         }
         authorization= Authorization()
         #fields = ['']
+
         
                 
 class RoomieResource(ModelResource):
@@ -39,9 +40,37 @@ class RoomieResource(ModelResource):
         always_return_data = True
         filtering = {
 #             "slug": ('exact', 'startswith',),
-            "username": ALL
+            "username": ALL,
+            "apartment" : ALL_WITH_RELATIONS
         }
         authorization= Authorization()
+    # saving null to apartment when the json for it is empty  
+    def hydrate(self,bundle):
+        if 'apartment' not in bundle.data:
+            bundle.obj.apartment = None
+            return bundle
+        return bundle
+    
+    
+class InviteResource(ModelResource):
+    fromRoomie = fields.ForeignKey(RoomieResource,'fromRoomie',full=True)
+    toRoomie = fields.ForeignKey(RoomieResource,'toRoomie',full=True)
+    apartment = fields.ForeignKey(ApartmentResource,'apartment',full=True)
+    class Meta:
+        queryset = Invite.objects.all()
+        resource_name = 'invite'
+        allowed_methods = ['get','post','put','delete']
+        always_return_data = True
+        authorization= Authorization()
+        filtering = {
+            "fromRoomie": ALL_WITH_RELATIONS,
+            "toRoomie": ALL_WITH_RELATIONS,
+            "apartment": ALL_WITH_RELATIONS,
+            "new" : ALL,
+            "status" : ALL
+        }
+                   
+                
         
 # class RoomieApartmentResource(ModelResource):
 # #     roomie = fields.ToOneField(RoomieResource,'roomie',full = True)

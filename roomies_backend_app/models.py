@@ -1,4 +1,5 @@
 from django.db import models
+import customModelField
 # from django.contrib.auth.models import User
 
 # Create your models here.
@@ -21,7 +22,16 @@ class Roomie(models.Model):
     def __str__(self):
         return str(self.username)
     
-    
+# the related name attribute, tells django which name to use for the reverse realation.
+#since we have 2 FK , if we wouldn't define it, we would end up with a clash since django
+#will try to define 2 reverse relation on 'Roomie' with the same name    
+class Invite(models.Model):
+    fromRoomie = models.ForeignKey(Roomie,related_name='roomies_from')
+    toRoomie = models.ForeignKey(Roomie,related_name='roomies_to')
+    apartment = models.ForeignKey(Apartment)
+    new = models.BooleanField()
+    # 0 - declined, 1- accepted, 2 - not sent answer - wrote custom range field, but needed to add south logic so gave up for now.
+    status = models.PositiveIntegerField()
     
 # class RoomieApartment(models.Model):
 #     roomie = models.ForeignKey(Roomie)
