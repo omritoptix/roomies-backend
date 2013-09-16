@@ -10,11 +10,11 @@ v1_api = Api(api_name='v1')
 v1_api.register(RoomieResource())
 v1_api.register(ApartmentResource())
 v1_api.register(InviteResource())
-# v1_api.register(BillResource())
-# v1_api.register(BillTypeResource())
-# v1_api.register(BillItemResource())
+v1_api.register(BillResource())
+v1_api.register(BillTypeResource())
+v1_api.register(BillItemResource())
 # v1_api.register(RoomieApartmentResource())
-# v1_api.register(RoomieBillItemResource())
+v1_api.register(RoomieBillItemResource())
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin

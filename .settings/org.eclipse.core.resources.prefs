@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//roomies_backend_app/migrations/0001_initial.py=utf-8
 encoding//roomies_backend_app/migrations/0005_auto__add_field_roomie_apartment.py=utf-8
+encoding//roomies_backend_app/migrations/0013_auto__add_field_apartment_roomiesNum.py=utf-8
+encoding//roomies_backend_app/migrations/0014_auto__chg_field_apartment_roomiesNum.py=utf-8
+encoding//roomies_backend_app/migrations/0015_auto__del_field_billitem_billID__add_field_billitem_bill__chg_field_ro.py=utf-8

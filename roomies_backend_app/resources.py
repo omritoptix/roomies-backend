@@ -24,10 +24,19 @@ class ApartmentResource(ModelResource):
         allowed_methods = ['get','post','put','delete']
         always_return_data = True
         filtering = {
-            "address": ALL
+            "address": ALL,
+            "roomiesNum" : ALL
         }
         authorization= Authorization()
         #fields = ['']
+
+    def dehydrate(self,bundle):
+        roomie_ids = []
+        for roomie in Roomie.objects.filter(apartment = bundle.obj.pk):
+            roomie_ids.append(roomie.id)
+        bundle.data['roomies'] = roomie_ids
+#         bundle.data['roomieBillItem_length'] = len(roomie_bill_item_ids)
+        return bundle
 
         
                 
@@ -69,7 +78,7 @@ class InviteResource(ModelResource):
             "new" : ALL,
             "status" : ALL
         }
-                   
+             
                 
         
 # class RoomieApartmentResource(ModelResource):
@@ -82,35 +91,72 @@ class InviteResource(ModelResource):
 #         always_return_data = True
 
         
-# class BillResource(ModelResource):
-#     apartment_id = fields.ForeignKey(ApartmentResource,'apartment')
-#     class Meta:
-#         queryset = Bill.objects.all()
-#         allowed_methods = ['get','post']
-#         always_return_data = True
+class BillResource(ModelResource):
+    apartment = fields.ForeignKey(ApartmentResource,'apartment')
+    class Meta:
+        queryset = Bill.objects.all()
+        allowed_methods = ['get','post','put','delete']
+        always_return_data = True
+        authorization= Authorization()
+        filtering = {
+            "apartment": ALL_WITH_RELATIONS,
+            "year": ALL,
+            "month": ALL,
+            "dateCreated" : ALL,
+            "isActive" : ALL
+        }
         
-# class BillTypeResource(ModelResource):
-#     
-#     class Meta:
-#         queryset = BillType.objects.all()
-#         allowed_methods = ['get','post']
-#         always_return_data = True
+class BillTypeResource(ModelResource):
+     
+    class Meta:
+        queryset = BillType.objects.all()
+        resource_name = 'bill_type'
+        allowed_methods = ['get','post']
+        always_return_data = True
         
         
-# class BillItemResource(ModelResource):
-#     roomie_id = fields.ToManyField(RoomieResource,'roomie',full = True)
-#     bill_id = fields.ForeignKey(BillResource,'billID',full = True)
-#     billType_id = fields.ForeignKey(BillTypeResource,'billType',full = True)
-#     class Meta:
-#         queryset = BillItem.objects.all()
-#         allowed_methods = ['get','post']
-#         always_return_data = True
+class BillItemResource(ModelResource):
+#     roomies = fields.ToManyField(RoomieResource,'roomies',full = True)
+    createdBy = fields.ForeignKey(RoomieResource,'createdBy',full = True)
+    bill = fields.ForeignKey(BillResource,'bill',full = True)
+    billType = fields.ForeignKey(BillTypeResource,'billType',full = True)
+    class Meta:
+        resource_name = "bill_item"
+        queryset = BillItem.objects.all()
+        allowed_methods = ['get','post','put','delete']
+        always_return_data = True
+        authorization= Authorization()
+        filtering = {
+            "bill": ALL_WITH_RELATIONS,
+            "roomies": ALL_WITH_RELATIONS,
+            "billType": ALL,
+            "other" : ALL,
+            "amount" : ALL,
+            "dateCreated" : ALL,
+            "createdBy" : ALL
+        }
         
-# class RoomieBillItemResource(ModelResource):
-#     class Meta:
-#         queryset = RoomieBillItem.objects.all()
-#         resource_name = 'roomieBillItem'
-#         allowed_methods = ['get','post']
-#         always_return_data = True
+    def dehydrate(self,bundle):
+        roomie_bill_item_ids = []
+        for roomieBillItem in RoomieBillItem.objects.filter(billItem = bundle.obj.pk):
+            roomie_bill_item_ids.append(roomieBillItem.id)
+        bundle.data['roomieBillItem'] = roomie_bill_item_ids
+#         bundle.data['roomieBillItem_length'] = len(roomie_bill_item_ids)
+        return bundle
+        
+        
+class RoomieBillItemResource(ModelResource):
+    roomie = fields.ForeignKey(RoomieResource,'roomie',full = True)
+    billItem = fields.ForeignKey(BillItemResource,'billItem',full = True)
+    class Meta:
+        queryset = RoomieBillItem.objects.all()
+        resource_name = 'roomie_bill_item'
+        llowed_methods = ['get','post','put','delete']
+        always_return_data = True
+        authorization= Authorization()
+        filtering = {
+            "roomie": ALL_WITH_RELATIONS,
+            "billItem": ALL_WITH_RELATIONS,
+        }
     
     
