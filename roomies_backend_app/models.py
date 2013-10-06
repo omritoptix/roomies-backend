@@ -69,14 +69,15 @@ class BillItem(models.Model):
     createdBy = models.ForeignKey(Roomie,related_name='createdBy')
 #     roomie = models.ManyToManyField(Roomie, through = 'RoomieBillItem')
     roomies = models.ManyToManyField(Roomie, through='RoomieBillItem')
-
     
     def __unicode__(self):
         return "%s need to pay %.2f on %s" %(self.bill,self.amount,self.billType)
     
 class RoomieBillItem(models.Model):
+#1     billItem = models.ForeignKey(BillItem,related_name="roomieBillItems")
     billItem = models.ForeignKey(BillItem)
     roomie = models.ForeignKey(Roomie)
+    amountPaid = models.DecimalField(max_digits = 10,decimal_places=2)
      
     def __unicode__(self):
         return "billItem id:%d,roomie:%s" %(self.billItem.id, self.roomie.username) 

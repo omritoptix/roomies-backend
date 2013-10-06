@@ -113,6 +113,9 @@ class BillTypeResource(ModelResource):
         resource_name = 'bill_type'
         allowed_methods = ['get','post']
         always_return_data = True
+        filtering = {
+            "description" : ALL
+        }
         
         
 class BillItemResource(ModelResource):
@@ -120,6 +123,7 @@ class BillItemResource(ModelResource):
     createdBy = fields.ForeignKey(RoomieResource,'createdBy',full = True)
     bill = fields.ForeignKey(BillResource,'bill',full = True)
     billType = fields.ForeignKey(BillTypeResource,'billType',full = True)
+#1 + 2     roomieBillItem = fields.ToManyField('roomies_backend_app.resources.RoomieBillItemResource','roomieBillItems',full=True,null=True)
     class Meta:
         resource_name = "bill_item"
         queryset = BillItem.objects.all()
@@ -136,18 +140,52 @@ class BillItemResource(ModelResource):
             "createdBy" : ALL
         }
         
+        
+# added the dummy resources because in this way i can load the billItem objects embedded
+#in the roomieBillItem, and vise versa. otherwise i would get recursion error.
+#another option is to replace dehydrate.
+
+#  1 class BillItemDummyResource(ModelResource):
+# #     roomies = fields.ToManyField(RoomieResource,'roomies',full = True)
+#     createdBy = fields.ForeignKey(RoomieResource,'createdBy',full = True)
+#     bill = fields.ForeignKey(BillResource,'bill',full = True)
+#     billType = fields.ForeignKey(BillTypeResource,'billType',full = True)
+#     roomieBillItems = fields.ToManyField('roomies_backend_app.resources.RoomieBillItemDummyResource','roomieBillItems',full=False,null=True)
+#     class Meta:
+#         resource_name = "bill_item_dummy"
+#         queryset = BillItem.objects.all()
+#         allowed_methods = ['get','post','put','delete']
+#         always_return_data = True
+#         authorization= Authorization()
+#         filtering = {
+#             "bill": ALL_WITH_RELATIONS,
+#             "roomies": ALL_WITH_RELATIONS,
+#             "billType": ALL,
+#             "other" : ALL,
+#             "amount" : ALL,
+#             "dateCreated" : ALL,
+#             "createdBy" : ALL
+#         }
+#         
+        
+    #side load all roomieBillItem related
+#     def dehydrate(self,bundle):
+#         roomieBillItemArray = []
+#         for roomieBillItem in RoomieBillItem.objects.filter(billItem = bundle.obj.pk):
+#             roomieBillItemArray.append(roomieBillItem)
+#         bundle.data['roomieBillItem'] = roomieBillItemArray
+#         return bundle
     def dehydrate(self,bundle):
         roomie_bill_item_ids = []
         for roomieBillItem in RoomieBillItem.objects.filter(billItem = bundle.obj.pk):
             roomie_bill_item_ids.append(roomieBillItem.id)
         bundle.data['roomieBillItem'] = roomie_bill_item_ids
-#         bundle.data['roomieBillItem_length'] = len(roomie_bill_item_ids)
         return bundle
         
         
 class RoomieBillItemResource(ModelResource):
-    roomie = fields.ForeignKey(RoomieResource,'roomie',full = True)
-    billItem = fields.ForeignKey(BillItemResource,'billItem',full = True)
+    roomie = fields.ForeignKey(RoomieResource,'roomie', full = True)
+    billItem = fields.ForeignKey(BillItemResource,'billItem',full=True)
     class Meta:
         queryset = RoomieBillItem.objects.all()
         resource_name = 'roomie_bill_item'
@@ -158,5 +196,20 @@ class RoomieBillItemResource(ModelResource):
             "roomie": ALL_WITH_RELATIONS,
             "billItem": ALL_WITH_RELATIONS,
         }
+        
+# 1 class RoomieBillItemDummyResource(ModelResource):
+#     roomie = fields.ForeignKey(RoomieResource,'roomie',full=False)
+#     billItem = fields.ForeignKey(BillItemResource,'billItem',full = False)
+#     class Meta:
+#         queryset = RoomieBillItem.objects.all()
+#         excludes = ['billItem']
+#         resource_name = 'roomie_bill_item_dummy'
+#         llowed_methods = ['get','post','put','delete']
+#         always_return_data = True
+#         authorization= Authorization()
+#         filtering = {
+#             "roomie": ALL_WITH_RELATIONS,
+#             "billItem": ALL_WITH_RELATIONS,
+#         }
     
     
