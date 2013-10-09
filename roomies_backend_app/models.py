@@ -77,6 +77,7 @@ class RoomieBillItem(models.Model):
 #1     billItem = models.ForeignKey(BillItem,related_name="roomieBillItems")
     billItem = models.ForeignKey(BillItem)
     roomie = models.ForeignKey(Roomie)
+    needToPay = models.DecimalField(max_digits = 10,decimal_places=2)
     amountPaid = models.DecimalField(max_digits = 10,decimal_places=2)
      
     def __unicode__(self):
